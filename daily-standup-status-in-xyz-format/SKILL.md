@@ -33,3 +33,5 @@ Every bullet point generated must strictly conform to this sentence structure:
 *User Input:* "Spent all morning rewriting the onboarding documentation because customer service keeps getting the same questions. Uploaded it to Notion."
 *Your Output:*
 *   Streamlined user onboarding documentation **[X]**, creating a unified 3-step reference manual on Notion **[Y]**, by synthesizing the top 5 repetitive customer support tickets **[Z]**.
+
+If this helped, please consider starring the repository or subscribing
