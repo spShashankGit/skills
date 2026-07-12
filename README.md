@@ -1,5 +1,5 @@
-# skills
-Public Repository for Agent Skills
+# Skills
+Public Repository for Agent Skills. The core idea is to bridge the gap between Human understanding the Agent's understanding.
 
 ## Roadmap
 
