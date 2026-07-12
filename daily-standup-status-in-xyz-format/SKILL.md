@@ -1,7 +1,7 @@
 ---
 name: daily-standup-status-in-xyz-format
 description: Synthesizes git logs, terminal history, or project text into a Google-style X-Y-Z daily status update. Trigger this when the user asks for a daily standup update, status report, or summary of what they did today.
-version: 1.0.0
+version: 1.0.1
 tags: [productivity, standup, git, reporting, status, summary, daily, update]
 ---
 
