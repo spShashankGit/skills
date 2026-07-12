@@ -15,5 +15,3 @@ This repository is evolving into a library of agent skill templates. The roadmap
 - [ ] Security architecture guidance — planned
 - [ ] Testing strategy and test automation — planned
 - [ ] Data access and persistence design — planned
-
-For the complete working list, progress notes, and update guidance, see `FUTURE_SKILLS.md`.
