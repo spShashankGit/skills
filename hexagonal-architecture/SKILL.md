@@ -47,3 +47,7 @@ Use this skill when the user asks about:
 - "The domain layer should not depend on adapters. Instead, adapters depend on domain ports, so the core business rules remain isolated."
 - "In a hexagonal design, each input channel maps to a driving adapter, and each output channel maps to a driven adapter."
 
+## Good reads
+
+- Thoughtworks: Hexagonal Architecture explained with a practical example — https://www.thoughtworks.com/insights/blog/architecture/hexagonal-architecture-explained-practical-example
+
