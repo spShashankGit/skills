@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "hexagonal-architecture": {
+      "source": "spshashankgit/skills",
+      "sourceType": "github",
+      "skillPath": "hexagonal-architecture/SKILL.md",
+      "computedHash": "959b89ddb1d02764cb02f9efec59375a65addd07ff2286a54306ae2932c93f2b"
+    }
+  }
+}
