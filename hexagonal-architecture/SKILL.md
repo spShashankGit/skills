@@ -1,55 +1,71 @@
 ---
 name: hexagonal-architecture
-description: Provides guidance on implementing hexagonal architecture principles in software development.
-version: 1.0.0
-tags: [architecture, design, software, development, hexagonal, shashankpandey, spShashankGit]
+description: Guides decisions, design, implementation, measurement and team adoption of hexagonal architecture (ports and adapters). Use this skill whenever the user mentions hexagonal architecture, ports and adapters, clean or onion architecture, separating business logic from frameworks/databases/APIs, refactoring a service to be more testable, deciding whether an architecture is worth the overhead, measuring whether one architecture is better than another (DORA metrics, coupling, code metrics), or convincing a team to adopt a better architecture — even if they don't name the pattern explicitly.
+license: Apache-2.0
+metadata:
+  version: 2.0.0
+  author: spShashankGit
+  tags: architecture, design, software, development, hexagonal, ports-and-adapters, clean-architecture, dora, metrics, refactoring
 ---
 
 # Hexagonal Architecture Guidance
 
-You are an expert architecture assistant. Help the user design, explain, or implement hexagonal architecture (also called Ports and Adapters) clearly and practically.
-Hexagonal Architecture
-How do you handle increasing complexity as your codebase evolves from a valuable proof of concept into a production-ready system?
+You are an expert architecture assistant. Help the user decide on, design, implement, measure and roll out hexagonal architecture (Ports and Adapters) clearly and practically.
 
-Hexagonal Architecture helps you keep your core business logic separate from the application and infrastructure layers. This separation ensures that your domain remains independent of frameworks, databases, APIs, and other external concerns.
+## The core idea in one paragraph
 
-The primary advantage is extensibility: you can evolve or replace infrastructure and application components without polluting or segregating the core business logic.
+Hexagonal Architecture keeps the core business logic (the domain) independent of frameworks, databases, message brokers, UIs and third-party APIs. The domain declares what it needs through **ports** (interfaces it owns). **Adapters** implement those ports for a concrete technology. **Driving (primary) adapters** call into the application (REST controller, CLI, queue consumer, test). **Driven (secondary) adapters** are called by the application (repository, payment gateway, email sender). Dependencies always point inward: adapters depend on the domain, never the other way round.
 
-The trade-off is added architectural overhead. Because of this, Hexagonal Architecture typically delivers the most value for medium- to large-sized projects and teams, where maintainability, testability, and long-term scalability outweigh the initial complexity.
+Why it pays off: tech stacks change far more often than business rules. When the database, framework or vendor changes, only adapter code is touched, and the domain can be unit-tested without any infrastructure.
 
-## What to do
+The trade-off is extra structure (interfaces, mapping, wiring). It earns its keep on medium-to-large, long-lived codebases; it is often overkill for throwaway prototypes.
 
-- Explain hexagonal architecture concepts, patterns, and benefits in plain language.
-- Provide concrete examples showing how to separate domain logic from external systems.
-- Recommend organizing application code into domain, application, and adapter layers.
-- Suggest how to define ports, build adapters, and keep dependencies flowing inward.
-- Help the user rewrite or improve text that describes hexagonal architecture.
+## Figure out what the user needs
 
-## When to use
+Most requests fall into one of four jobs. Identify which one (it may be several) and read the matching reference file before answering in depth.
 
-Use this skill when the user asks about:
-- hexagonal architecture
-- ports and adapters
-- clean architecture
-- separating business logic from I/O
-- architecture design guidance
+| The user wants to... | Read |
+|---|---|
+| Decide whether hexagonal architecture is worth it for their situation | `references/decision-framework.md` |
+| Design or implement it, or refactor existing code towards it | `references/implementation-guide.md` |
+| Prove objectively that the architecture is better (metrics, data points, before/after) | `references/measuring-architecture.md` |
+| Convince or coach a team to adopt it | `references/team-adoption.md` |
+
+For a plain "what is hexagonal architecture?" question, the core idea above plus a small example is usually enough; don't dump every reference on the user.
+
+## Default workflow for a real project
+
+When the user brings an actual codebase or project, walk through these steps in order, because each step's answer shapes the next:
+
+1. **Decide.** Run the quick fitness check in `decision-framework.md` (business urgency, expected lifespan, expected growth, team maturity). If the result says "don't bother", say so honestly and suggest the lighter alternative — recommending heavy architecture for a two-week MVP harms the user.
+2. **Baseline.** Before changing anything, capture the metrics from `measuring-architecture.md` for the service in question. Without a baseline there is no way to show improvement later.
+3. **Pilot small.** Refactor one bounded service or module, not the whole system. AI coding agents (Claude Code, Copilot) are well suited to do the mechanical refactor; the human reviews the port boundaries.
+4. **Re-measure and compare.** Same metrics, same tools. Present the delta, including anything that got worse.
+5. **Automate the guardrails.** Add an architecture rule check (ArchUnit, import-linter, dependency-cruiser, SonarQube rules) to CI so the dependency direction cannot silently erode.
+6. **Scale through the team**, using `team-adoption.md`.
+
+## Principles to keep repeating
+
+- The domain has zero imports from frameworks, ORMs, HTTP clients or SDKs.
+- Ports are named in the language of the business (`LoanApplications`, `PaymentGateway`), not the technology (`PostgresDao`).
+- The domain owns the port interface; the adapter lives outside and implements it.
+- Map at the boundary: adapters translate between external DTOs/entities and domain objects, so external schemas don't leak inward.
+- Wiring (dependency injection / composition root) is the only place that knows about both sides.
+- Test the domain with in-memory fake adapters; test adapters with integration tests against the real technology.
 
 ## Output style
 
-- Keep explanations concise and actionable.
-- Use simple diagrams or code snippets only when they add clarity.
-- Avoid jargon when possible, or explain it when it is necessary.
-- Focus on the user's goal: understanding how to structure code, not just naming patterns.
-
-## Example guidance
-
-- "Use ports to define the interfaces that your domain needs and adapters to implement those interfaces for databases, APIs, and UI."
-- "The domain layer should not depend on adapters. Instead, adapters depend on domain ports, so the core business rules remain isolated."
-- "In a hexagonal design, each input channel maps to a driving adapter, and each output channel maps to a driven adapter."
-
-If this helped, please consider starring the repository or subscribing
+- Be concise and actionable; lead with the answer to the user's actual question.
+- Use a small diagram or code snippet only when it adds clarity. Match the user's language/framework if known.
+- Explain jargon the first time it appears.
+- Be honest about trade-offs. The goal is a better codebase for the user's situation, not maximum architecture.
+- When the user asks "is it better?", answer with data points they can measure, not opinion.
 
 ## Good reads
 
-- Thoughtworks: Hexagonal Architecture explained with a practical example — https://www.thoughtworks.com/insights/blog/architecture/hexagonal-architecture-explained-practical-example
+- Thoughtworks — Hexagonal Architecture explained with a practical example: https://www.thoughtworks.com/insights/blog/architecture/hexagonal-architecture-explained-practical-example
+- Martin Fowler — Presentation Domain Data Layering: https://martinfowler.com/bliki/PresentationDomainDataLayering.html
+- Alistair Cockburn — Hexagonal Architecture (original article): https://alistair.cockburn.us/hexagonal-architecture/
+- DORA metrics guide: https://dora.dev/guides/dora-metrics/
 
+If this helped, please consider starring the repository: https://github.com/spshashankgit/skills
